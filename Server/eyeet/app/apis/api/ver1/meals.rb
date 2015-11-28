@@ -20,30 +20,37 @@ module API
         end
         post do
             begin
-                result = {"data"=>[], "status"=>""}
-                data = params[:image]
-              #  decoded_image = Base64.decode64(data['data:image/jpeg;base64,'.length .. -1])
+                result = {"data"=>[], "meal_id"=>"","status"=>""}
 
                new_meal = Meal.create({
                     user_id: params[:user_id],
-#                    image: decoded_image
-                    image: data
+                    image: params[:image]
                 })
 
-                full_path = "#{Rails.root}" + "/public"+ new_meal.image.url
+               result["meal_id"] = new_meal.id
+
+              #TODO 実際に食事したときだけFoodsとして記録 new_meal.idをJSONで返して，別のAPIで受け取り，新規Food作成
+
+               full_path = "#{Rails.root}" + "/public"+ new_meal.image.url
                image_file = File.open(full_path, "r+b")
 
-                client = Faraday.new(:url => "https://api.apigw.smt.docomo.ne.jp")
-                res = client.post do |req|
+              #docomoで画像解析
+              client = Faraday.new(:url => "https://api.apigw.smt.docomo.ne.jp")
+              res = client.post do |req|
                   req.url '/imageRecognition/v1/recognize?APIKEY=572e78732e47743935372e6a5838787961304446755a61467a654c564734346c7770376356797036636632&recog=food&numOfCandidates=5'
                   req.headers['Content-Type'] = 'application/octet-stream'
                   req.body = image_file.read
-                 # req.body = decoded_image #image_file.read
-                end
+              end
                body = JSON.parse res.body
 
                 body['candidates'].each do |candidate|
                    item_name = candidate['detail']['itemName'].slice(/\D+/).strip.gsub(/\(/,'')
+
+                    Food.create({
+                      name: item_name,
+                      user_id: params[:user_id],
+                      meal_id: new_meal.id
+                    })
                   nut =  Nutrition.find_by_name(item_name)
                     nutrition = {}
                    if nut.present?
