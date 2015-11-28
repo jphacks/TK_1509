@@ -37,7 +37,9 @@ module API
                 end
                 body = JSON.parse res.body
                 body['candidates'].each do |candidate|
-                   record = {"itemId" => candidate['itemId'], "itemName" => candidate['detail']['itemName'].slice(/\D+/), "maker" => candidate['detail']['maker'],"imageUrl" => candidate['imageUrl'], }
+                    nutrition =  {"calorie" => 247, "protein"=> 4.5, "fat" => 15.8, "carbs"=> 21.7, "sodium"=> 100}
+
+                   record = {"itemId" => candidate['itemId'], "itemName" => candidate['detail']['itemName'].slice(/\D+/), "maker" => candidate['detail']['maker'],"imageUrl" => candidate['imageUrl'],  "nutrition" => nutrition }
                     result["data"].push(record)
                 end
                 result["status"] = "OK"
