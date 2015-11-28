@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Applications/Android/sdk/add-ons/addon-sony_smarteyeglass_sdk-sony-19/samples/SmartExtensionUtils/build/intermediates/bundles/debug/res/values-ja/values-ja.xml -->
+    <eat-comment/>
+    <dimen name="headset_pro_text_size">16px</dimen>
+</resources>

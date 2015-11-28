@@ -1,0 +1,1 @@
+include ':app', ':SmartExtensionAPI', ':SmartExtensionUtils', ':SmartEyeglassAPI'

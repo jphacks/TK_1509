@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "/Users/toshiyukiando/Documents/AndroidStudioWorkSpace/Jphacks-Eye-et/TK_09/Eye-et-glass/Eye-et-glass/SmartExtensionUtils/build/intermediates/res/merged/debug/values-ja/values-ja.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 52,
+                    "endOffset": 103
+                },
+                "from": {
+                    "file": "/Users/toshiyukiando/Documents/AndroidStudioWorkSpace/Jphacks-Eye-et/TK_09/Eye-et-glass/Eye-et-glass/SmartExtensionUtils/src/main/res/values-ja/headset_pro.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 136,
+                        "endColumn": 52,
+                        "endOffset": 184
+                    }
+                }
+            }
+        ]
+    }
+]

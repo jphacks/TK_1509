@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Eye-et-glass</string>
+
+    <string name="preference_activity_title">Hello World Settings</string>
+    <!-- Name of extension, shown in preferences -->
+    <string name="extension_name">Hello World</string>
+    <!-- Text used on control layout -->
+    <string name="text_title_layout">Sample Text</string>
+    <!-- Text in -->
+    <string name="text_phone_to_smarteyeglass">Hello SmartEyeglass</string>
+
+    <!-- Configuration title shown in preferences -->
+    <string name="configuration_text">Hello World Activity</string>
+</resources>
