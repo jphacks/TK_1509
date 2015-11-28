@@ -15,7 +15,11 @@ module API
         end
         post do
             begin
-
+               Meal.create({
+                    user_id: params[:user_id],
+                    image: params[:image]
+                })
+               return "ok"
             rescue #=> e
                 return "failed"
             end
