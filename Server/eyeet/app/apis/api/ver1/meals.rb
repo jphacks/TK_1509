@@ -31,13 +31,14 @@ module API
 
                 client = Faraday.new(:url => "https://api.apigw.smt.docomo.ne.jp")
                 res = client.post do |req|
-                  req.url '/imageRecognition/v1/recognize?APIKEY=572e78732e47743935372e6a5838787961304446755a61467a654c564734346c7770376356797036636632&recog=food&numOfCandidates=2'
+                  req.url '/imageRecognition/v1/recognize?APIKEY=572e78732e47743935372e6a5838787961304446755a61467a654c564734346c7770376356797036636632&recog=food&numOfCandidates=5'
                   req.headers['Content-Type'] = 'application/octet-stream'
                   req.body = image_file.read
                 end
                 body = JSON.parse res.body
                 body['candidates'].each do |candidate|
-                    result["data"].push(candidate)
+                   record = {"itemId" => candidate['itemId'], "itemName" => candidate['detail']['itemName'].slice(/\D+/), "maker" => candidate['detail']['maker'],"imageUrl" => candidate['imageUrl'], }
+                    result["data"].push(record)
                 end
                 result["status"] = "OK"
             rescue => e
