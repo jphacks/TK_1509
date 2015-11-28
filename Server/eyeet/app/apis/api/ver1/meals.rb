@@ -19,6 +19,8 @@ module API
         end
         post do
             begin
+                result = {"data"=>[], "status"=>""}
+
                new_meal = Meal.create({
                     user_id: params[:user_id],
                     image: params[:image]
@@ -32,14 +34,16 @@ module API
                   req.url '/imageRecognition/v1/recognize?APIKEY=572e78732e47743935372e6a5838787961304446755a61467a654c564734346c7770376356797036636632&recog=food&numOfCandidates=2'
                   req.headers['Content-Type'] = 'application/octet-stream'
                   req.body = image_file.read
-                 end
-                 body = JSON.parse res.body
-                 pp body
-
+                end
+                body = JSON.parse res.body
+                body['candidates'].each do |candidate|
+                    result["data"].push(candidate)
+                end
+                result["status"] = "OK"
             rescue => e
-               return "failed"
-                puts e
+               result["status"] = "Error"
             end
+            result
 
         end
 
