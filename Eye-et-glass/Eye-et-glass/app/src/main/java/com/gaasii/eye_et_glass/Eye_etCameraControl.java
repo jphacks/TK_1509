@@ -377,8 +377,11 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
 
                         JSONObject data = datas.getJSONObject(0);
                         String Item_name = data.getString("itemName");
+                        //--------------------------------------------
+                        JSONObject Nutition = data.getJSONObject("nutrition");
+                        Integer calorie_int = Nutition.getInt("calorie");
 
-
+                        Log.d("nutrition", "calorie" + calorie_int);
 
                         //String data1 = json.getString("data");
 
