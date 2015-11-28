@@ -39,7 +39,7 @@ module API
                 body['candidates'].each do |candidate|
                     nutrition =  {"calorie" => 247, "protein"=> 4.5, "fat" => 15.8, "carbs"=> 21.7, "sodium"=> 100}
 
-                   record = {"itemId" => candidate['itemId'], "itemName" => candidate['detail']['itemName'].slice(/\D+/), "maker" => candidate['detail']['maker'],"imageUrl" => candidate['imageUrl'],  "nutrition" => nutrition }
+                   record = {"itemId" => candidate['itemId'], "itemName" => candidate['detail']['itemName'].slice(/\D+/).strip.gsub(/\(/,'')., "maker" => candidate['detail']['maker'],"imageUrl" => candidate['imageUrl'],  "nutrition" => nutrition }
                     result["data"].push(record)
                 end
                 result["status"] = "OK"
