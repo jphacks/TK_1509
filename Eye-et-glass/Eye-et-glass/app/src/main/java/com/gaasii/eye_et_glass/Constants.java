@@ -11,7 +11,7 @@ public final class Constants {
             Constants.class.getPackage().getName() + ".key";
 
     /** The log tag. */
-    public static final String LOG_TAG = "HelloWorld";
+    public static final String LOG_TAG = "Eye-et";
 
     /** Hides the default constructor. */
     private Constants() {

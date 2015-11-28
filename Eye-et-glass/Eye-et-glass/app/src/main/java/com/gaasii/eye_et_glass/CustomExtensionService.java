@@ -12,6 +12,7 @@ import com.sonyericsson.extras.liveware.extension.util.ExtensionService;
 import com.sonyericsson.extras.liveware.extension.util.ExtensionUtils;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlExtension;
 import com.sonyericsson.extras.liveware.extension.util.registration.DeviceInfo;
+import com.sonyericsson.extras.liveware.extension.util.registration.DeviceInfoHelper;
 import com.sonyericsson.extras.liveware.extension.util.registration.DisplayInfo;
 import com.sonyericsson.extras.liveware.extension.util.registration.RegistrationAdapter;
 import com.sonyericsson.extras.liveware.extension.util.registration.RegistrationInformation;
@@ -94,6 +95,7 @@ public final class CustomExtensionService extends ExtensionService {
      * This creates the HelloWorldControl object after verifying
      * that the connected accessory is a SmartEyeglass.
      */
+    /*
     @Override
     public ControlExtension createControlExtension(
             final String hostAppPackageName) {
@@ -112,5 +114,19 @@ public final class CustomExtensionService extends ExtensionService {
         }
         throw new IllegalArgumentException("No control for: "
                 + hostAppPackageName);
+    }
+    */
+    @Override
+    public ControlExtension createControlExtension(
+            final String hostAppPackageName) {
+        boolean isApiSupported = DeviceInfoHelper
+                .isSmartEyeglassScreenSupported(this, hostAppPackageName);
+        if (isApiSupported) {
+            return new Eye_etCameraControl(this, hostAppPackageName);
+        } else {
+            Log.d(Constants.LOG_TAG, "Service: not supported, exiting");
+            throw new IllegalArgumentException(
+                    "No control for: " + hostAppPackageName);
+        }
     }
 }

@@ -1,14 +1,19 @@
 <resources>
     <string name="app_name">Eye-et-glass</string>
 
-    <string name="preference_activity_title">Hello World Settings</string>
+    <string name="preference_activity_title">Eye-et Settings</string>
     <!-- Name of extension, shown in preferences -->
-    <string name="extension_name">Hello World</string>
+    <string name="extension_name">Eye-et-glass</string>
     <!-- Text used on control layout -->
     <string name="text_title_layout">Sample Text</string>
     <!-- Text in -->
     <string name="text_phone_to_smarteyeglass">Hello SmartEyeglass</string>
 
     <!-- Configuration title shown in preferences -->
-    <string name="configuration_text">Hello World Activity</string>
+    <string name="configuration_text">Eye-et-glass</string>
+    <string name="preference_option_read_me">READ ME</string>
+    <!-- Read me text shown in dialog -->
+    <string name="preference_option_read_me_txt">The camera extension uses the camera of SmartEyeglass device.\n
+                                                 When you tap the touch sensor, the selected mode shall be activated.</string>
 </resources>
+

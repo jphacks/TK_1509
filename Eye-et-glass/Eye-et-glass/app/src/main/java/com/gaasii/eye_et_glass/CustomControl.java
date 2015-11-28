@@ -18,7 +18,7 @@ public final class CustomControl extends ControlExtension {
     private final SmartEyeglassControlUtils utils;
 
     /** The SmartEyeglass API version that this app uses */
-    private static final int SMARTEYEGLASS_API_VERSION = 1;
+    private static final int SMARTEYEGLASS_API_VERSION = 4;
 
     /**
      * Shows a simple layout on the SmartEyeglass display and sets
