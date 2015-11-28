@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -28,7 +29,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gaasii.eye_et_grass.R;
 import com.sony.smarteyeglass.SmartEyeglassControl;
 import com.sony.smarteyeglass.extension.util.CameraEvent;
@@ -37,33 +41,19 @@ import com.sony.smarteyeglass.extension.util.SmartEyeglassControlUtils;
 import com.sony.smarteyeglass.extension.util.SmartEyeglassEventListener;
 import com.sonyericsson.extras.liveware.aef.control.Control;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlExtension;
+import com.sonyericsson.extras.liveware.extension.util.control.ControlListItem;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlTouchEvent;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.util.EntityUtils;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.message.BasicNameValuePair;
-import android.net.http.AndroidHttpClient;
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import AsyncHttpRequest.AsyncHttpRequest;
 import httpposttask.HttpPostListener;
 import httpposttask.HttpPostTask;
+
+
 
 
 /**
@@ -103,6 +93,8 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
     private int touchIvent = 1;
 
     String json_str;
+
+    private String json_data;
 
     final static private String TAG = "HttpPost";
 
@@ -236,6 +228,9 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
         setScreenState(Control.Intents.SCREEN_STATE_ON);
         pointX = context.getResources().getInteger(R.integer.POINT_X);
         pointY = context.getResources().getInteger(R.integer.POINT_Y);
+
+        showLayout(R.layout.camera_textview, null);
+        utils.sendTextViewLayoutId(R.id.calory);
 
         Time now = new Time();
         now.setToNow();
@@ -374,7 +369,37 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
                 }
                 public void onPostExecute(String result) {
                     // do something
+                    // result にjsonが入ってる。
+                    try{
+                        JSONObject json = new JSONObject(result);
+
+                        JSONArray datas = json.getJSONArray("data");
+
+                        JSONObject data = datas.getJSONObject(0);
+                        String Item_name = data.getString("itemName");
+
+
+
+                        //String data1 = json.getString("data");
+
+
+                        json_data = Item_name;
+                        //Log.d("json_data", data1 + )
+
+                        ControlListItem item = createControlListItem(pointBaseX);
+                        showLayout(R.layout.camera_textview, null);
+                        //sendListCount(R.id.gallery, GALLERY_CONTENT.length);
+                        //sendListPosition(R.id.gallery, lastPosition);
+                        utils.sendTextViewLayoutId(R.id.calory);
+                        sendListItem(item);
+                    }catch (JSONException e){
+                        Log.d("JSONERROR", "Error");
+                    }
+
+
                     Log.d("onPostExecute", result);
+
+
                 }
                 public void onCancelled() {
                     // do something
@@ -457,6 +482,28 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
         Log.i(TAG, "post failure");
     }
 
+
+    private ControlListItem createControlListItem(final int position){
+        ControlListItem item = new ControlListItem();
+        //item.layoutReference = R.id.gallery;
+        item.dataXmlLayout = R.layout.camera_textview;
+        item.listItemId = position;
+        item.listItemPosition = position;
+
+        List<Bundle> list = new ArrayList<Bundle>();
+
+        // Header data.
+        //Bundle headerBundle = new Bundle();
+        //headerBundle.putInt(Control.Intents.EXTRA_LAYOUT_REFERENCE, R.id.title);
+        //headerBundle.putString(Control.Intents.EXTRA_TEXT, GALLERY_CONTENT[position]);
+        Bundle calBundle = new Bundle();
+        calBundle.putInt(Control.Intents.EXTRA_LAYOUT_REFERENCE, R.id.calory);
+        calBundle.putString(Control.Intents.EXTRA_TEXT, String.valueOf(json_data));
+        list.add(calBundle);
+        //list.add(headerBundle);
+        item.layoutData = list.toArray(new Bundle[list.size()]);
+        return item;
+    }
 }
 
 
