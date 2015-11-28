@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Environment;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Base64;
@@ -101,7 +102,10 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
     //-----------------------------
     private int touchIvent = 1;
 
+    String json_str;
+
     final static private String TAG = "HttpPost";
+
 
     public Eye_etCameraControl(final Context context, final String hostAppPackageName) {
         super(context, hostAppPackageName);
@@ -329,13 +333,11 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
             saveFileIndex++;
         }
 
-
         try {
             // sdcardフォルダを指定
             String SDFile = android.os.Environment.getExternalStorageDirectory().getPath();
 //                    + "/Android/data/"+getPackageName();
             File root = new File(SDFile);
-
 
             // 保存処理開始
             FileOutputStream fos = null;
@@ -365,56 +367,24 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
         //------------------Server upload-------------------------//
         saveToServer = true;
         if (saveToServer == true) {
-            String fileName = saveFilePrefix + String.format("%04d", saveFileIndex);
-            //HttpPostTask task = new HttpPostTask("http://amicry.com/img/jphacks.php");
-            //HttpPostTask task = new HttpPostTask("http://gaasii.com/Anyfiles/imgupload/upload_jphacks.php");
-            //HttpPostTask task = new HttpPostTask("http://yuji.website:3002/api/v1/meals");
-            //task.addText("param1", fileName);//画像ファイル名
-            //task.addText("user_id", "1");
-            //task.addImage("image.jpg", data);//画像データ
-            //task.addImage("image", data);
 
-            //byte[] encode = Base64.encode(data, Base64.DEFAULT);
-
-            //task.addImage("image", encode);
-            //String a = new String(data, Charset.forName("UTF-8"));
-            //task.addText("image", new String(data, Charset.forName("UTF-8")));
-
-
-            /*
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
-            byte[] _bArray = bos.toByteArray();
-            String image64 = Base64.encodeToString(_bArray, Base64.DEFAULT);
-            String _imageBinary = "data:image/jpeg;base64," + image64;
-            task.addText("image", _imageBinary);
-
-            Log.d("IMAGE:::::::", _imageBinary);
-*/
-/*
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        // 大阪の天気予報XMLデータ
-                        URL url = new URL("http://yuji.website:3002/api/v1/meals");
-                        HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                        String str = InputStreamToString(con.getInputStream());
-                        Log.d("HTTP", str);
-                    } catch(Exception ex) {
-                        System.out.println(ex);
-                    }
+            AsyncHttpRequest post = new AsyncHttpRequest(new AsyncHttpRequest.AsyncCallback() {
+                public void onPreExecute() {
+                    // do something
                 }
-            }).start();
-
-*/
-            final String str = "";
-            //String str = postMultipart("http://yuji.website:3002/api/v1/meals", data, "image");
-            AsyncHttpRequest post = new AsyncHttpRequest();
+                public void onPostExecute(String result) {
+                    // do something
+                    Log.d("onPostExecute", result);
+                }
+                public void onCancelled() {
+                    // do something
+                }
+            });
             post.setImage(data);
             post.execute(data);
+         //   json_str = post.getJson_string();
 
-            Log.d("response::::", str);
+            //Log.d("response::::", this.json_str);
             //task.setListener(Eye_etCameraControl.this);
             //task.execute();
             saveFileIndex2++;
@@ -487,41 +457,6 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
         Log.i(TAG, "post failure");
     }
 
-
-    public String postMultipart(String url, byte[] image, String params) {
-        HttpClient client = new DefaultHttpClient();
-        String str = "";
-
-        MultipartEntityBuilder entity = MultipartEntityBuilder.create();
-        entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-        entity.setCharset(Charset.forName("UTF-8"));
-        try {
-            // 画像をセット
-            // 第一引数：パラメータ名
-            // 第二引数：画像データ
-            // 第三引数：画像のタイプ。jpegかpngかは自由
-            // 第四引数：画像ファイル名。ホントはContentProvider経由とかで取って来るべきなんだろうけど、今回は見えない部分なのでパス
-            entity.addBinaryBody("avater", image, ContentType.create("image/png"), "hoge.png");
-            url = "http://example.com/image.json";
-
-            // 画像以外のデータを送る場合はaddTextBodyを使う
-            ContentType textContentType = ContentType.create("application/json","UTF-8");
-            entity.addTextBody("auth_token", params, textContentType);
-
-            HttpPost post = new HttpPost(url);
-            post.setEntity(entity.build());
-
-            HttpResponse httpResponse = client.execute(post);
-            str = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
-            Log.i("HTTP status Line", httpResponse.getStatusLine().toString());
-            Log.i("HTTP response", new String(str));
-        } catch (ClientProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return str;
-    }
 }
 
 

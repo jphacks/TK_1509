@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.gaasii.eye_et_glass.Eye_etCameraControl;
+import com.gaasii.eye_et_glass.Eye_etCameraPreferenceActivity;
 import com.gaasii.eye_et_grass.R;
 
 import org.apache.http.HttpResponse;
@@ -25,15 +27,48 @@ import java.nio.charset.Charset;
 
 public class AsyncHttpRequest extends AsyncTask<byte[], Void, String> {
 
-    private Activity mainActivity;
-    Integer integer;
+
+    private AsyncCallback _asyncCallback = null;
+
+    /**
+     * Activiyへのコールバック用interface
+     *
+     *onPreExecute()非同期処理前に実行したい処理
+     *onPostExecute()非同期処理完了時に実行したい処理
+     *onProgressUpdate()非同期処理中に実行したい処理
+     *onCancelled()キャンセル時に実行したい処理
+     *
+     * @author Koujides
+     *
+     */
+    public interface AsyncCallback {
+        void onPreExecute();
+        void onPostExecute(String result);
+        void onCancelled();
+    }
+    /**
+     * コンストラクタ
+     * @param asyncCallback
+     */
+    public AsyncHttpRequest(AsyncCallback asyncCallback) {
+        this._asyncCallback = asyncCallback;
+    }
+
+
+
+
+
 
     // このメソッドは必ずオーバーライドする必要があるよ
     // ここが非同期で処理される部分みたいたぶん。
     private byte[] data;
+    private String json_string;
+
     public void setImage(byte[] data){
         this.data = data;
     }
+
+    Eye_etCameraControl eye_etCameraControl;
 
 
     @Override
@@ -46,7 +81,7 @@ public class AsyncHttpRequest extends AsyncTask<byte[], Void, String> {
         String url = "http://yuji.website:3002/api/v1/meals";
 
         HttpClient client = new DefaultHttpClient();
-        String str;
+        String str, str1;
 
         MultipartEntityBuilder entity = MultipartEntityBuilder.create();
         entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -70,20 +105,44 @@ public class AsyncHttpRequest extends AsyncTask<byte[], Void, String> {
             post.setEntity(entity.build());
 
             HttpResponse httpResponse = client.execute(post);
+
             str = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+
+            str1 = new String(str);
+
             Log.i("HTTP status Line", httpResponse.getStatusLine().toString());
-            Log.i("HTTP response", new String(str));
+            Log.i("HTTP response", str1);
+
         } catch (ClientProtocolException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        json_string = str1;
+        return str1;
+    }
 
-        return str;
+    /**
+     * 以下は基本的にいじらない
+     */
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        this._asyncCallback.onPreExecute();
     }
 
 
-    // このメソッドは非同期処理の終わった後に呼び出されます
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        this._asyncCallback.onPostExecute(json_string);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        this._asyncCallback.onCancelled();
+    }
 
 }
