@@ -5,8 +5,7 @@
               android:gravity="center_horizontal"
               android:orientation="vertical"
 
-              tools:context="com.gaasii.eye_et.LoginActivity"
-    android:fitsSystemWindows="true">
+              tools:context="com.gaasii.eye_et.LoginActivity">
 
     <!-- Login progress -->
     <ImageView
@@ -35,14 +34,12 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="185dp"
-        android:layout_marginLeft="30dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/login_progress"
         android:layout_alignStart="@+id/login_progress"
-        android:layout_marginTop="320dp"
-        android:layout_marginRight="30dp">
+        android:fillViewport="false">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +47,12 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="300dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
@@ -65,7 +67,12 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="360dp">
 
                 <EditText
                     android:id="@+id/password"
@@ -88,11 +95,14 @@
                 android:background="@mipmap/signup_button"
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="430dp"
                 android:src="@mipmap/signup_button"
-                android:layout_marginLeft="45dp" />
+                android:layout_marginLeft="80dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="false" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
 </RelativeLayout>
