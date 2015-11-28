@@ -14,26 +14,28 @@ module API
 
         # POST /api/v1/meals
         params do
-          requires :image, type: Hash
+          requires :image, type: String
           requires :user_id, type: String
         end
         post do
             begin
                 result = {"data"=>[], "status"=>""}
+                data = params[:image]
+                decoded_image = Base64.decode64(data['data:image/jpeg;base64,'.length .. -1])
 
-               new_meal = Meal.create({
-                    user_id: params[:user_id],
-                    image: params[:image]
-                })
+               # new_meal = Meal.create({
+               #      user_id: params[:user_id],
+               #      image: decoded_image
+               #  })
 
-                full_path = "#{Rails.root}" + "/public"+ new_meal.image.url
-               image_file = File.open(full_path, "r+b")
+               #  full_path = "#{Rails.root}" + "/public"+ new_meal.image.url
+               # image_file = File.open(full_path, "r+b")
 
                 client = Faraday.new(:url => "https://api.apigw.smt.docomo.ne.jp")
                 res = client.post do |req|
                   req.url '/imageRecognition/v1/recognize?APIKEY=572e78732e47743935372e6a5838787961304446755a61467a654c564734346c7770376356797036636632&recog=food&numOfCandidates=5'
                   req.headers['Content-Type'] = 'application/octet-stream'
-                  req.body = image_file.read
+                  req.body = decoded_image #image_file.read
                 end
                 body = JSON.parse res.body
                 body['candidates'].each do |candidate|
