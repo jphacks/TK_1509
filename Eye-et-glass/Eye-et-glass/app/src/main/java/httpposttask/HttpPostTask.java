@@ -8,10 +8,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class HttpPostTask extends AsyncTask<Void, Void, byte[]>{
     final static private String BOUNDARY = "MyBoundaryString";
@@ -72,15 +74,45 @@ public class HttpPostTask extends AsyncTask<Void, Void, byte[]>{
         InputStream is = null;
 
         try {
+            //String temp = URLEncoder.encode(mURL);
+            //URL url = new URL(temp);
+
+            //http://yuji.website:3002/api/v1/meals
+
+
+/*
+            String protocol = "http";
+            String host = "yuji.website";
+            int port = 3002;
+            String filePath = "/api/v1/meals";
+
+            URL url = new URL(protocol, host, port, filePath);
+*/
             URL url = new URL(mURL);
             connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
+            //connection.setRequestProperty("Accept-Charset", "UTF-8");
+            //connection.setRequestProperty("Accept", "*/*");
+            //connection.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY + ";charset=UTF8");
+            //connection.setRequestProperty("Content-Type", "multipart/form-data; charset=UTF8");
+            //connection.setRequestProperty("charset", "UTF-8");
             connection.setRequestMethod("POST");
+            //connection.getDoInput();
             connection.setDoOutput(true);
+            connection.setDoInput(true);
+
+
+
 
             // 接続
             connection.connect();
-
+            /*
+            int status = connection.getResponseCode();
+            if(status >= HttpStatus.SC_BAD_REQUEST)
+                in = connection.getErrorStream();
+            else
+                in = connection.getInputStream();
+            */
             // 送信
             OutputStream os = connection.getOutputStream();
             os.write(data);
@@ -100,15 +132,21 @@ public class HttpPostTask extends AsyncTask<Void, Void, byte[]>{
         } finally {
             try {
                 is.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                Log.d("TAG", "Eroor1");
+            }
 
             try {
                 connection.disconnect();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                Log.d("TAG", "Eroor2");
+            }
 
             try {
                 baos.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                Log.d("TAG", "Eroor3");
+            }
         }
 
         return result;
@@ -145,8 +183,8 @@ public class HttpPostTask extends AsyncTask<Void, Void, byte[]>{
 
                 baos.write(("--" + BOUNDARY + "\r\n").getBytes());
                 baos.write(("Content-Disposition: form-data;").getBytes());
-                baos.write(("name=\"" + name + "\";").getBytes());
-                baos.write(("filename=\"" + key + "\"\r\n").getBytes());
+                baos.write(("name=\"" + key + "\";").getBytes());
+                baos.write(("filename=\"" +  name + "\"\r\n").getBytes());
                 baos.write(("Content-Type: image/jpeg\r\n\r\n").getBytes());
                 baos.write(data);
                 baos.write(("\r\n").getBytes());

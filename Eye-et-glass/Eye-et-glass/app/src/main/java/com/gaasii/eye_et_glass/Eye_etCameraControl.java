@@ -11,9 +11,22 @@ import android.graphics.Rect;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 
 import com.gaasii.eye_et_grass.R;
 import com.sony.smarteyeglass.SmartEyeglassControl;
@@ -25,6 +38,29 @@ import com.sonyericsson.extras.liveware.aef.control.Control;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlExtension;
 import com.sonyericsson.extras.liveware.extension.util.control.ControlTouchEvent;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.message.BasicNameValuePair;
+import android.net.http.AndroidHttpClient;
+
+
+import AsyncHttpRequest.AsyncHttpRequest;
 import httpposttask.HttpPostListener;
 import httpposttask.HttpPostTask;
 
@@ -32,7 +68,7 @@ import httpposttask.HttpPostTask;
 /**
  * Created by toshiyukiando on 2015/11/28.
  */
-public final class Eye_etCameraControl extends ControlExtension implements HttpPostListener{
+public final class Eye_etCameraControl extends ControlExtension implements HttpPostListener {
 
     private static final int SMARTEYEGLASS_API_VERSION = 3;
     public final int width;
@@ -47,7 +83,6 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
      * Instance of the Control Utility class.
      */
     private final SmartEyeglassControlUtils utils;
-
 
 
     private boolean saveToSdcard = false;
@@ -133,9 +168,9 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
     public void onTouch(final ControlTouchEvent event) {
 
         if (event.getAction() == Control.TapActions.SINGLE_TAP) {
-            Log.d("onTouch Ivent !!!!!!", "touchIvent"+touchIvent);
+            Log.d("onTouch Ivent !!!!!!", "touchIvent" + touchIvent);
             touchIvent = 0;
-            Log.d("onTouch Ivent !!!!!!", "touchIvent"+touchIvent);
+            Log.d("onTouch Ivent !!!!!!", "touchIvent" + touchIvent);
 
             if (recordingMode == SmartEyeglassControl.Intents.CAMERA_MODE_STILL ||
                     recordingMode == SmartEyeglassControl.Intents.CAMERA_MODE_STILL_TO_FILE) {
@@ -269,7 +304,7 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
             return;
         }
 
-        if(event.getIndex() != 0){
+        if (event.getIndex() != 0) {
             Log.d(Constants.LOG_TAG, "not oparate this event");
             return;
         }
@@ -290,20 +325,98 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
         saveToSdcard = true;
         if (saveToSdcard == true) {
             String fileName = saveFilePrefix + String.format("%04d", saveFileIndex) + ".jpg";
-            new SavePhotoTask(saveFolder,fileName).execute(data);
+            new SavePhotoTask(saveFolder, fileName).execute(data);
             saveFileIndex++;
+        }
+
+
+        try {
+            // sdcardフォルダを指定
+            String SDFile = android.os.Environment.getExternalStorageDirectory().getPath();
+//                    + "/Android/data/"+getPackageName();
+            File root = new File(SDFile);
+
+
+            // 保存処理開始
+            FileOutputStream fos = null;
+            fos = new FileOutputStream(new File(root, "a.jpg"));
+
+            // jpegで保存
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            // 保存処理終了
+            fos.close();
+        } catch (Exception e) {
+            Log.e("Error", "" + e.toString());
+        }
+
+
+        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/dir/");
+        if (dir.exists()) {
+            File file = new File(dir.getAbsolutePath() + "/test.jpg");
+            if (file.exists()) {
+                Bitmap _bm = BitmapFactory.decodeFile(file.getPath());
+
+            } else {
+                //存在しない
+            }
         }
 
         //------------------Server upload-------------------------//
         saveToServer = true;
-        if (saveToServer == true){
+        if (saveToServer == true) {
             String fileName = saveFilePrefix + String.format("%04d", saveFileIndex);
             //HttpPostTask task = new HttpPostTask("http://amicry.com/img/jphacks.php");
-            HttpPostTask task = new HttpPostTask("http://gaasii.com/Anyfiles/imgupload/upload_jphacks.php");
-            task.addText("param1", fileName);//画像ファイル名
-            task.addImage("image.jpg", data);//画像データ
-            task.setListener(Eye_etCameraControl.this);
-            task.execute();
+            //HttpPostTask task = new HttpPostTask("http://gaasii.com/Anyfiles/imgupload/upload_jphacks.php");
+            //HttpPostTask task = new HttpPostTask("http://yuji.website:3002/api/v1/meals");
+            //task.addText("param1", fileName);//画像ファイル名
+            //task.addText("user_id", "1");
+            //task.addImage("image.jpg", data);//画像データ
+            //task.addImage("image", data);
+
+            //byte[] encode = Base64.encode(data, Base64.DEFAULT);
+
+            //task.addImage("image", encode);
+            //String a = new String(data, Charset.forName("UTF-8"));
+            //task.addText("image", new String(data, Charset.forName("UTF-8")));
+
+
+            /*
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
+            byte[] _bArray = bos.toByteArray();
+            String image64 = Base64.encodeToString(_bArray, Base64.DEFAULT);
+            String _imageBinary = "data:image/jpeg;base64," + image64;
+            task.addText("image", _imageBinary);
+
+            Log.d("IMAGE:::::::", _imageBinary);
+*/
+/*
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // 大阪の天気予報XMLデータ
+                        URL url = new URL("http://yuji.website:3002/api/v1/meals");
+                        HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                        String str = InputStreamToString(con.getInputStream());
+                        Log.d("HTTP", str);
+                    } catch(Exception ex) {
+                        System.out.println(ex);
+                    }
+                }
+            }).start();
+
+*/
+            final String str = "";
+            //String str = postMultipart("http://yuji.website:3002/api/v1/meals", data, "image");
+            AsyncHttpRequest post = new AsyncHttpRequest();
+            post.setImage(data);
+            post.execute(data);
+
+            Log.d("response::::", str);
+            //task.setListener(Eye_etCameraControl.this);
+            //task.execute();
             saveFileIndex2++;
         }
 
@@ -370,11 +483,48 @@ public final class Eye_etCameraControl extends ControlExtension implements HttpP
         Log.i(TAG, new String(response));
     }
 
-    public void postFailure(){
+    public void postFailure() {
         Log.i(TAG, "post failure");
     }
 
+
+    public String postMultipart(String url, byte[] image, String params) {
+        HttpClient client = new DefaultHttpClient();
+        String str = "";
+
+        MultipartEntityBuilder entity = MultipartEntityBuilder.create();
+        entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        entity.setCharset(Charset.forName("UTF-8"));
+        try {
+            // 画像をセット
+            // 第一引数：パラメータ名
+            // 第二引数：画像データ
+            // 第三引数：画像のタイプ。jpegかpngかは自由
+            // 第四引数：画像ファイル名。ホントはContentProvider経由とかで取って来るべきなんだろうけど、今回は見えない部分なのでパス
+            entity.addBinaryBody("avater", image, ContentType.create("image/png"), "hoge.png");
+            url = "http://example.com/image.json";
+
+            // 画像以外のデータを送る場合はaddTextBodyを使う
+            ContentType textContentType = ContentType.create("application/json","UTF-8");
+            entity.addTextBody("auth_token", params, textContentType);
+
+            HttpPost post = new HttpPost(url);
+            post.setEntity(entity.build());
+
+            HttpResponse httpResponse = client.execute(post);
+            str = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+            Log.i("HTTP status Line", httpResponse.getStatusLine().toString());
+            Log.i("HTTP response", new String(str));
+        } catch (ClientProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return str;
+    }
 }
+
+
 
 /*
 class MySmartEyeglassEventListener extends SmartEyeglassEventListener {
