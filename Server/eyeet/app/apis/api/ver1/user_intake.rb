@@ -60,7 +60,7 @@ module API
           rate_protein = today_intake_protein * 100.0 / recomended_protein
           rate_fat = today_intake_fat * 100.0 / recomended_fat
           rate_carb = today_intake_carb * 100.0 / recomended_carb
-          rate_mineral = today_intake_mineral * 100.0 / recomended_mineral
+
 
           data = {
             "intake_cal"=> today_intake_cal.round(2),
