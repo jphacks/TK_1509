@@ -78,8 +78,19 @@
 * さくらインターネット さくらのクラウド
 
 #### フレームワーク・ライブラリ・モジュール
-* （フロントエンド）Sony SmartEyeglass SDK + SmartExtensionAPI + SmartExtensionUtils + HttpCore + HttpMine + Jackson
-* （バックエンド）Ruby on Rails 4 + Grape + Rmagick + Faraday
+* フロントエンド
+ * SmartEyeglass SDK
+ * SmartExtensionAPI
+ * SmartExtensionUtils
+ * HttpCore
+ * HttpMine
+ * Jackson
+
+* バックエンド
+ * Ruby on Rails 4
+ * Grape
+ * Rmagick
+ * Faraday
 
 #### デバイス
 * Sony SmartEyeglass Developer Edition SED-E1 - 透過式メガネ型端末
