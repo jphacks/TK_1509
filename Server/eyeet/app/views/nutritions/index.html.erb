@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Nutritions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Calorie</th>
+      <th>Fat</th>
+      <th>Carb</th>
+      <th>Protein</th>
+      <th>Vitamin</th>
+      <th>Mineral</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @nutritions.each do |nutrition| %>
+      <tr>
+        <td><%= nutrition.name %></td>
+        <td><%= nutrition.calorie %></td>
+        <td><%= nutrition.fat %></td>
+        <td><%= nutrition.carb %></td>
+        <td><%= nutrition.protein %></td>
+        <td><%= nutrition.vitamin %></td>
+        <td><%= nutrition.mineral %></td>
+        <td><%= link_to 'Show', nutrition %></td>
+        <td><%= link_to 'Edit', edit_nutrition_path(nutrition) %></td>
+        <td><%= link_to 'Destroy', nutrition, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Nutrition', new_nutrition_path %>
