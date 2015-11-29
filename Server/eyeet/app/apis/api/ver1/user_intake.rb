@@ -56,25 +56,38 @@ module API
 
           end
 
-          rate_cal = today_intake_cal * 100.0 / recomended_cal
-          rate_protein = today_intake_protein * 100.0 / recomended_protein
-          rate_fat = today_intake_fat * 100.0 / recomended_fat
-          rate_carb = today_intake_carb * 100.0 / recomended_carb
+          rate_cal = today_intake_cal * 10 / recomended_cal
+          rate_protein = today_intake_protein * 10 / recomended_protein
+          rate_fat = today_intake_fat * 10 / recomended_fat
+          rate_carb = today_intake_carb * 10 / recomended_carb
+
+          if rate_cal > 10
+            rate_cal = 10
+          end
+          if rate_protein > 10
+            rate_protein = 10
+          end
+          if rate_fat > 10
+            rate_fat = 10
+          end
+          if rate_carb > 10
+            rate_carb = 10
+          end
 
 
           data = {
             "intake_cal"=> today_intake_cal.round(2),
             "recomended_cal"=> recomended_cal,
-            "rate_cal"=> rate_cal.round(2),
+            "rate_cal"=> rate_cal.round(0),
             "intake_protein"=> today_intake_protein.round(2),
             "recomended_protein"=> recomended_protein,
-            "rate_protein"=> rate_protein.round(2),
+            "rate_protein"=> rate_protein.round(0),
             "intake_fat"=> today_intake_fat.round(2),
             "recomended_fat"=> recomended_fat,
-            "rate_fat"=> rate_fat.round(2),
+            "rate_fat"=> rate_fat.round(0),
             "intake_carb"=> today_intake_carb.round(2),
             "recomended_carb"=> recomended_carb,
-            "rate_carb"=> rate_carb.round(2)
+            "rate_carb"=> rate_carb.round(0)
           }
 
           status = "OK"
