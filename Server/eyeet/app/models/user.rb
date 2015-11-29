@@ -86,5 +86,22 @@ def recommended_daily_protein #タンパク質摂取 推奨表（g日）
 
   end
 
+def recommended_daily_fat
+	62.0
+end
+
+
+def recommended_daily_carb
+	320.0
+end
+
+
+def recommended_daily_Na
+	2900.0
+end
+
+def recommended_daily_Ca
+	680.0
+end
 
 end

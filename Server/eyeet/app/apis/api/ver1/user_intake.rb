@@ -22,6 +22,17 @@ module API
           today_intake_protein = 0.0
           rate_protein = 0.0
 
+          #脂質
+          recomended_fat = user.recommended_daily_fat
+          today_intake_fat = 0.0
+          rate_fat = 0.0
+
+          #炭水化物
+          recomended_carb = user.recommended_daily_carb
+          today_intake_carb = 0.0
+          rate_carb = 0.0
+
+
         #今日の期間内の摂取量を計算
         nutrition = {}
         today_intakes = Food.where(created_at: Time.now.midnight..Time.now, user_id: params[:user_id])
@@ -32,16 +43,24 @@ module API
               nutrition =  {"calorie" => nut['calorie'], "protein"=> nut['protein'], "fat" => nut['fat'], "carb"=> nut['carb'], "vitamin"=> nut['vitamin'], "mineral"=> nut['mineral']}
                today_intake_cal += nut['calorie'].to_f
                today_intake_protein += nut['protein'].to_f
+               today_intake_fat += nut['fat'].to_f
+               today_intake_carb += nut['carb'].to_f
+           #   today_intake_mineral += nut['mineral'].to_f
            else #デバッグ用 栄養DBなかったとき用 ポテチ（仮）
               nutrition =  {"calorie" => 335, "protein"=> 2.8, "fat" => 21.4, "carb"=> 32.8, "vitamin"=> {}, "mineral"=> {"Na"=>284} }
                today_intake_cal += 335
                today_intake_protein += 2.8
+               today_intake_fat += 21.4
+               today_intake_carb += 32.8
            end
 
           end
 
           rate_cal = today_intake_cal * 100.0 / recomended_cal
           rate_protein = today_intake_protein * 100.0 / recomended_protein
+          rate_fat = today_intake_fat * 100.0 / recomended_fat
+          rate_carb = today_intake_carb * 100.0 / recomended_carb
+          rate_mineral = today_intake_mineral * 100.0 / recomended_mineral
 
           data = {
             "intake_cal"=> today_intake_cal.round(2),
@@ -49,7 +68,13 @@ module API
             "rate_cal"=> rate_cal.round(2),
             "intake_protein"=> today_intake_protein.round(2),
             "recomended_protein"=> recomended_protein,
-            "rate_protein"=> rate_protein.round(2)
+            "rate_protein"=> rate_protein.round(2),
+            "intake_fat"=> today_intake_fat.round(2),
+            "recomended_fat"=> recomended_fat,
+            "rate_fat"=> rate_fat.round(2),
+            "intake_carb"=> today_intake_carb.round(2),
+            "recomended_carb"=> recomended_carb,
+            "rate_carb"=> rate_carb.round(2)
           }
 
           status = "OK"
