@@ -102,9 +102,9 @@
 * 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
 
 * SmartEyeglassへの独自のUI表示部分
-* 商品名から栄養素情報を取得するトンネルとなるAPI
+* 商品名から栄養素情報を取得するトンネルとなるAPI<br>
 https://github.com/jphacks/TK_09/blob/master/Server/eyeet/app/apis/api/ver1/meals.rb
-* AndroidからRuby on RailsのAPIへのmultipart POST
+* AndroidからRuby on RailsのAPIへのmultipart POST<br>
 https://github.com/jphacks/TK_09/commit/ed256233f369a5aec8cc040c1b2f22a0f4e40d43
 （標準ライブラリにバグがあり、苦戦）
 
