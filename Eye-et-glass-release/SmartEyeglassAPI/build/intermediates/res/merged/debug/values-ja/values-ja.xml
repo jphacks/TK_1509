@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/toshiyukiando/Desktop/samples/SmartEyeglassAPI/build/intermediates/exploded-aar/AdvancedLayouts/SmartExtensionUtils/unspecified/res/values-ja/values-ja.xml -->
+    <eat-comment/>
+    <dimen name="headset_pro_text_size">16px</dimen>
+</resources>
