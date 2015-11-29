@@ -51,8 +51,10 @@ module API
                       user_id: params[:user_id],
                       meal_id: new_meal.id
                     })
+
+                  #まず、製品IDを使った完全一致で、栄養素データベースから検索
                   nut =  Nutrition.find_by_name(item_name)
-                    nutrition = {}
+                  nutrition = {}
                    if nut.present?
                       nutrition =  {"calorie" => nut['calorie'], "protein"=> nut['protein'], "fat" => nut['fat'], "carb"=> nut['carb'], "vitamin"=> nut['vitamin'], "mineral"=> nut['mineral']}
                    else

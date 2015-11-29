@@ -44,10 +44,10 @@ module API
           rate_protein = today_intake_protein * 100.0 / recomended_protein
 
           data = {
-            "intake_cal"=> today_intake_cal,
+            "intake_cal"=> today_intake_cal.round(2),
             "recomended_cal"=> recomended_cal,
             "rate_cal"=> rate_cal.round(2),
-            "intake_protein"=> today_intake_protein,
+            "intake_protein"=> today_intake_protein.round(2),
             "recomended_protein"=> recomended_protein,
             "rate_protein"=> rate_protein.round(2)
           }
