@@ -71,13 +71,8 @@
 ### 活用した技術
 #### API・データ
 * docomo 画像認識API（商品認識）
-* gooラボ 形態素解析API
 * EatSmart もぐなび　http://mognavi.jp/food/858364
 * さくらインターネット さくらのクラウド
-
-<a href="http://www.goo.ne.jp/">
-<img src="https://u.xgoo.jp/img/sgoo.png" alt="supported by goo" width="100" title="supported by goo">
-</a>
 
 #### フレームワーク・ライブラリ・モジュール
 * フロントエンド
