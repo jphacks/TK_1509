@@ -109,5 +109,5 @@ https://github.com/jphacks/TK_09/commit/ed256233f369a5aec8cc040c1b2f22a0f4e40d43
 （標準ライブラリにバグがあり、苦戦）
 
 #### 製品に取り入れた研究内容（データ・ソフトウェアなど）（※アカデミック部門の場合のみ提出必須）
-* 
-*
+* 厚生労働省.「日本人の食事摂取基準」(2010年版)
+* Eat Smart Inc. 「カロリーチェック」 https://www.eatsmart.jp/do/caloriecheck/index
