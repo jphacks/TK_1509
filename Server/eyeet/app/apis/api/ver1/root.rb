@@ -7,7 +7,7 @@ module API
 
      # mount API::Ver1::Users
       mount API::Ver1::Meals
-     # mount API::Ver1::Foods
+      mount API::Ver1::UserIntake
     end
   end
 end
