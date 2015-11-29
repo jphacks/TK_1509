@@ -41,5 +41,6 @@ dependencies {
     compile project(':SmartEyeglassAPI')
     compile files('libs/httpcore-4.3.2.jar')
     compile files('libs/httpmime-4.3.4.jar')
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.4'
 }
 
