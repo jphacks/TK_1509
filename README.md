@@ -25,6 +25,8 @@
 　自分のそれまでの摂取量を踏まえて、わかりやすくくグラフ化して表示します。<br>
 > 応用例：どの食品を選ぶのが良いか、自分にあった栄養バランスの観点から比較できます。
 
+<img src="http://yuji.website/Eye-et/ui_poteti.png" width="300">　　<img src="http://yuji.website/Eye-et/poteti.png" width="300">
+
 ####2. 見る＋ワンタッチで、食事を簡単記録
 　特徴1 のようにして確認した後、実際に食べるかどうかを選択すれば、その食事情報が記録されます。<br>
 
@@ -64,6 +66,8 @@
 堅苦しいものではなく、ゲーム中でのHPやMPのような、楽しめるUIを目指しました。<br>
 かつ、邪魔にならずに分かりやすいシンプルさも意識しました。
 
+<img src="http://yuji.website/Eye-et/nutrient.png" width="300">　<img src="http://yuji.website/Eye-et/allergy.png" width="300">
+
 * 手軽に使える「栄養LOOK機能」<br>
 調べる手間を減らし、ワンタッチで目の前の栄養成分を確認できる手軽さを追求しました。
 
@@ -95,8 +99,14 @@
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
-* 独自で開発したものの内容をこちらに記載してください
 * 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
+
+* SmartEyeglassへの独自のUI表示部分
+* 商品名から栄養素情報を取得するトンネルとなるAPI
+https://github.com/jphacks/TK_09/blob/master/Server/eyeet/app/apis/api/ver1/meals.rb
+* AndroidからRuby on RailsのAPIへのmultipart POST
+https://github.com/jphacks/TK_09/commit/ed256233f369a5aec8cc040c1b2f22a0f4e40d43
+（標準ライブラリにバグがあり、苦戦）
 
 #### 製品に取り入れた研究内容（データ・ソフトウェアなど）（※アカデミック部門の場合のみ提出必須）
 * 
