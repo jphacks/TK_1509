@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/smarteyeglass_control_width"
+    android:layout_height="@dimen/smarteyeglass_control_height"
+    android:background="@android:color/black"
+    tools:ignore="PxUsage,UselessParent" >
+
+        <TextView
+            android:id="@+id/per"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="366px"
+            android:clickable="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smarteyeglass_text_size_small"
+            android:text="per"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="73px" />
+
+        <TextView
+            android:id="@+id/calory"
+            android:layout_width="60px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="335px"
+            android:clickable="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smarteyeglass_text_size_normal"
+            android:text="calory"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="2px" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ui_cal"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ui_cal_normal"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ui_cal_normal_m9"/>
+
+
+</RelativeLayout><!-- From: file:/Users/toshiyukiando/Documents/AndroidStudioWorkSpace/Jphacks-Eye-et/TK_09/Eye-et-glass-Advance/AdvancedLayout/app/src/main/res/layout/smarteyeglass_item_gallery.xml -->
