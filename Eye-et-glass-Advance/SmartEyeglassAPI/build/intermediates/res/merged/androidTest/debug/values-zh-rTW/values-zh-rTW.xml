@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/toshiyukiando/Documents/AndroidStudioWorkSpace/Jphacks-Eye-et/TK_09/Eye-et-glass-Advance/SmartEyeglassAPI/build/intermediates/exploded-aar/AdvancedLayout/SmartExtensionUtils/unspecified/res/values-zh-rTW/values-zh-rTW.xml -->
+    <eat-comment/>
+    <dimen name="headset_pro_text_size">16px</dimen>
+    <dimen name="smart_watch_text_size_normal">16px</dimen>
+    <dimen name="smart_watch_text_size_small">14px</dimen>
+</resources>
