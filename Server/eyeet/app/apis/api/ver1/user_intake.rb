@@ -7,6 +7,11 @@ module API
     class UserIntake < Grape::API
       resource :user_intake do
 
+       get 'delete' do
+         Food.delete_all
+          'UserIntake Reset Done.'
+        end
+
         # GET /api/v1/user_intake/:user_id
        get ':user_id' do
         begin
